@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Amour — Une Exploration du Cœur</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+  :root {
+    --rouge: #c0392b;
+    --rouge-doux: #e74c3c;
+    --rose: #f8c8c8;
+    --rose-pale: #fff5f5;
+    --bordeaux: #7d1a1a;
+    --or: #d4a853;
+    --creme: #fdf8f0;
+    --sombre: #1a0a0a;
+    --gris: #5a3a3a;
+    --blanc: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--creme);
+    color: var(--sombre);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.8;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* Curseur personnalisé */
+  body::after {
+    content: '♥';
+    position: fixed;
+    top: 0; left: 0;
+    font-size: 14px;
+    color: var(--rouge);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+    opacity: 0;
+    id: cursor-heart;
+  }
+
+  /* Particules flottantes */
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    font-size: 12px;
+    color: var(--rouge);
+    opacity: 0;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0%   { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+    10%  { opacity: 0.4; }
+    90%  { opacity: 0.2; }
+    100% { opacity: 0; transform: translateY(-10vh) rotate(360deg); }
+  }
+
+  /* Header héros */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 60%, #3d0000 0%, #1a0000 60%, #0a0000 100%);
+    z-index: 1;
+  }
+
+  .hero-bg-hearts {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 50 C10 35 0 25 0 15 A15 15 0 0 1 30 10 A15 15 0 0 1 60 15 C60 25 50 35 30 50Z' fill='%23ff0000'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(192,57,43,0.3) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+  }
+
+  .hero-content { position: relative; z-index: 2; padding: 2rem; }
+
+  .hero-label {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.4em;
+    color: var(--or);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 0.5s;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(5rem, 15vw, 12rem);
+    font-weight: 700;
+    color: var(--blanc);
+    line-height: 0.9;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeInUp 1.2s ease forwards 0.8s;
+    text-shadow: 0 0 80px rgba(192,57,43,0.8);
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--rouge-doux);
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.7);
+    max-width: 550px;
+    margin: 2rem auto;
+    font-style: italic;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 1.5s;
+  }
+
+  .hero-scroll {
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 2s;
+  }
+
+  .scroll-btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: var(--blanc);
+    text-decoration: none;
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--rouge);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+
+  .scroll-btn:hover::before { transform: scaleX(1); }
+  .scroll-btn:hover { border-color: var(--rouge); }
+
+  .big-heart {
+    font-size: 8rem;
+    display: block;
+    margin-bottom: 1rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(192,57,43,0.9));
+  }
+
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    14% { transform: scale(1.15); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Navigation */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(26,10,10,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(192,57,43,0.3);
+    padding: 0 2rem;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  nav ul li a {
+    display: block;
+    padding: 1.2rem 1.5rem;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-family: 'EB Garamond', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 1.5rem; right: 1.5rem;
+    height: 2px;
+    background: var(--rouge);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+
+  nav ul li a:hover { color: var(--blanc); }
+  nav ul li a:hover::after { transform: scaleX(1); }
+
+  /* Sections principales */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Section intro */
+  .intro-section {
+    padding: 8rem 0;
+    background: var(--creme);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    font-family: 'EB Garamond', serif;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    color: var(--bordeaux);
+    margin-bottom: 1rem;
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+
+  .section-divider::before,
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rouge));
+  }
+
+  .section-divider::after {
+    background: linear-gradient(to left, transparent, var(--rouge));
+  }
+
+  .section-divider span { color: var(--rouge); font-size: 1.2rem; }
+
+  .lead-text {
+    font-size: 1.25rem;
+    line-height: 1.9;
+    color: var(--gris);
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* Articles cards */
+  .articles-section {
+    padding: 6rem 0;
+    background: #fff8f8;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .article-card {
+    background: var(--blanc);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(100,0,0,0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .article-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--rouge), var(--or));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+
+  .article-card:hover::before { transform: scaleX(1); }
+  .article-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(100,0,0,0.15); }
+
+  .card-emoji {
+    display: block;
+    font-size: 3rem;
+    padding: 2rem 2rem 0;
+  }
+
+  .card-content { padding: 1.5rem 2rem 2rem; }
+
+  .card-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--bordeaux);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .card-excerpt {
+    color: var(--gris);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+
+
+  /* Section pleine largeur - article détaillé */
+  .full-article {
+    padding: 8rem 0;
+  }
+
+  .full-article.dark {
+    background: var(--sombre);
+    color: rgba(255,255,255,0.85);
+  }
+
+  .full-article.dark .section-title { color: var(--rose); }
+  .full-article.dark .lead-text { color: rgba(255,255,255,0.65); }
+  .full-article.dark .article-body { color: rgba(255,255,255,0.75); }
+  .full-article.dark .article-body h3 { color: var(--rose); }
+  .full-article.dark blockquote {
+    border-color: var(--rouge);
+    background: rgba(192,57,43,0.1);
+    color: rgba(255,255,255,0.8);
+  }
+
+  .article-body {
+    max-width: 720px;
+    margin: 0 auto;
+    margin-top: 3rem;
+    color: var(--gris);
+    font-size: 1.05rem;
+    line-height: 1.9;
+  }
+
+  .article-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--bordeaux);
+    margin: 3rem 0 1rem;
+    font-style: italic;
+  }
+
+  .article-body p { margin-bottom: 1.5rem; }
+
+  blockquote {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--rouge);
+    background: rgba(192,57,43,0.05);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--bordeaux);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Section types d'amour */
+  .types-section {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, #fff5f5 0%, #fff8ef 100%);
+  }
+
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .type-card {
+    padding: 2.5rem 2rem;
+    background: var(--blanc);
+    border-radius: 2px;
+    text-align: center;
+    border-bottom: 3px solid transparent;
+    transition: all 0.4s;
+    box-shadow: 0 2px 15px rgba(100,0,0,0.06);
+  }
+
+  .type-card:hover {
+    border-bottom-color: var(--rouge);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(100,0,0,0.12);
+  }
+
+  .type-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .type-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--bordeaux);
+    margin-bottom: 0.5rem;
+  }
+
+  .type-origin {
+    font-size: 0.8rem;
+    color: var(--rouge);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .type-desc {
+    font-size: 0.9rem;
+    color: var(--gris);
+    line-height: 1.7;
+  }
+
+  /* Section manifestations */
+  .manifestations-section {
+    padding: 8rem 0;
+    background: var(--sombre);
+    color: rgba(255,255,255,0.8);
+  }
+
+  .manifestations-section .section-title { color: var(--rose); }
+  .manifestations-section .lead-text { color: rgba(255,255,255,0.55); }
+
+  .manifests-list {
+    max-width: 720px;
+    margin: 3rem auto 0;
+    display: grid;
+    gap: 1px;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .manifest-item {
+    background: rgba(255,255,255,0.03);
+    padding: 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    transition: background 0.3s;
+    cursor: default;
+  }
+
+  .manifest-item:hover { background: rgba(192,57,43,0.1); }
+
+  .manifest-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: rgba(192,57,43,0.5);
+    font-style: italic;
+    line-height: 1;
+    padding-top: 0.2rem;
+  }
+
+  .manifest-text h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--rose);
+    margin-bottom: 0.5rem;
+  }
+
+  .manifest-text p {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+  }
+
+  /* Section science */
+  .science-section {
+    padding: 8rem 0;
+    background: var(--creme);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .stat-card {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    background: var(--blanc);
+    border-radius: 2px;
+    box-shadow: 0 2px 15px rgba(100,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--rouge), var(--or));
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--rouge);
+    line-height: 1;
+    display: block;
+    counter-reset: none;
+  }
+
+  .stat-unit {
+    font-size: 1.5rem;
+    color: var(--or);
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--gris);
+    margin-top: 0.5rem;
+    display: block;
+    font-style: italic;
+  }
+
+  /* Section interactif */
+  .interactive-section {
+    padding: 8rem 0;
+    background: linear-gradient(180deg, #fff5f5 0%, var(--creme) 100%);
+    text-align: center;
+  }
+
+  .quiz-container {
+    max-width: 640px;
+    margin: 3rem auto 0;
+    background: var(--blanc);
+    padding: 3rem;
+    box-shadow: 0 10px 60px rgba(100,0,0,0.1);
+  }
+
+  .quiz-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--bordeaux);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .quiz-options {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .quiz-option {
+    padding: 1rem 1.5rem;
+    border: 1px solid rgba(192,57,43,0.2);
+    background: transparent;
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    color: var(--gris);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+    border-radius: 1px;
+  }
+
+  .quiz-option:hover {
+    border-color: var(--rouge);
+    background: rgba(192,57,43,0.05);
+    color: var(--bordeaux);
+    transform: translateX(8px);
+  }
+
+  .quiz-result {
+    display: none;
+    padding: 2rem;
+    background: rgba(192,57,43,0.05);
+    border-left: 3px solid var(--rouge);
+    text-align: left;
+    font-style: italic;
+    color: var(--bordeaux);
+    font-size: 1.05rem;
+  }
+
+  /* Section citations */
+  .quotes-section {
+    padding: 8rem 0;
+    background: var(--sombre);
+    overflow: hidden;
+  }
+
+  .quotes-carousel {
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 250px;
+  }
+
+  .quote-slide {
+    display: none;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+  }
+
+  .quote-slide.active { display: block; }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: var(--blanc);
+    line-height: 1.5;
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  .quote-text::before { content: '\201C'; color: var(--rouge); font-size: 4rem; line-height: 0; vertical-align: -1rem; margin-right: 0.3rem; }
+  .quote-text::after { content: '\201D'; color: var(--rouge); font-size: 4rem; line-height: 0; vertical-align: -1rem; margin-left: 0.3rem; }
+
+  .quote-author {
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+
+  .quote-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .dot.active { background: var(--rouge); }
+
+  /* Footer */
+  footer {
+    background: #0d0000;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid rgba(192,57,43,0.2);
+  }
+
+  .footer-heart {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 1rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+
+  footer p { font-size: 0.85rem; letter-spacing: 0.1em; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Ligne décorative */
+  .ornament {
+    text-align: center;
+    color: var(--rouge);
+    font-size: 1.5rem;
+    letter-spacing: 1rem;
+    margin: 2rem 0;
+    opacity: 0.4;
+  }
+
+  /* Pulse red glow on hover over cards */
+  .glow-hover {
+    position: relative;
+  }
+
+  .glow-hover::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 4px;
+    background: radial-gradient(ellipse, rgba(192,57,43,0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+
+  .glow-hover:hover::after { opacity: 1; }
+
+  /* Burger button */
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px; height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: auto;
+  }
+
+  .burger span {
+    display: block;
+    height: 2px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    nav {
+      padding: 0 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      color: var(--rouge);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      padding: 0.8rem 0;
+    }
+
+    .burger { display: flex; }
+
+    nav ul {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: rgba(20,5,5,0.98);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(192,57,43,0.3);
+      padding: 0.5rem 0 1rem;
+    }
+
+    nav ul.open { display: flex; }
+
+    nav ul li a {
+      padding: 0.9rem 1.5rem;
+      font-size: 1rem;
+      border-bottom: none;
+    }
+
+    nav ul li a::after { display: none; }
+
+    .article-body { font-size: 1rem; }
+    .quiz-container { padding: 2rem 1.5rem; }
+    .full-article { padding: 5rem 0; }
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--sombre); }
+  ::-webkit-scrollbar-thumb { background: var(--rouge); border-radius: 3px; }
+
+  /* Heart cursor trail */
+  .heart-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 14px;
+    color: var(--rouge);
+    transform: translate(-50%, -50%);
+    animation: heartFade 0.8s ease forwards;
+  }
+
+  @keyframes heartFade {
+    0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -80%) scale(0.3); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Particules flottantes -->
+<div class="particles" id="particles"></div>
+
+<!-- Héros -->
+<section class="hero">
+  <div class="hero-bg-hearts"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-label">Une exploration du cœur humain</p>
+    <span class="big-heart">♥</span>
+    <h1 class="hero-title">
+      L'<em>Amour</em>
+    </h1>
+    <p class="hero-subtitle">
+      Qu'est-ce qui fait battre le cœur ? Pourquoi aimons-nous ? Qui aimons-nous ? Explorons ensemble le mystère le plus profond de l'existence humaine.
+    </p>
+    <div class="hero-scroll">
+      <a href="#intro" class="scroll-btn">Commencer l'exploration</a>
+    </div>
+  </div>
+</section>
+
+<!-- Navigation -->
+<nav>
+  <span class="nav-logo">♥ L'Amour</span>
+  <button class="burger" id="burger-btn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="nav-menu">
+    <li><a href="#intro">Qu'est-ce que c'est ?</a></li>
+    <li><a href="#types">Les Types</a></li>
+    <li><a href="#manifestations">Les Signes</a></li>
+    <li><a href="#science">La Science</a></li>
+    <li><a href="#quiz">Se Découvrir</a></li>
+    <li><a href="#citations">Citations</a></li>
+  </ul>
+</nav>
+
+<!-- Introduction -->
+<section class="intro-section" id="intro">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Chapitre I</span>
+      <h2 class="section-title">Qu'est-ce que l'Amour ?</h2>
+      <div class="section-divider"><span>♥</span></div>
+      <p class="lead-text">
+        L'amour est un sentiment profond, universel, parfois douloureux, toujours transformateur. Il est à la fois la plus vieille question de l'humanité et la plus difficile à répondre.
+      </p>
+    </div>
+
+    <div class="article-body reveal">
+      <p>
+        L'amour est difficile à définir précisément, car il est vécu différemment par chaque personne. Pourtant, on peut dire que l'amour est un attachement profond, une connexion émotionnelle forte qui nous lie à une autre personne, à un être vivant, ou même à une idée. Il touche le cœur, l'esprit et le corps en même temps.
+      </p>
+
+      <h3>Une émotion ou bien plus ?</h3>
+      <p>
+        L'amour n'est pas seulement une émotion passagère comme la joie ou la colère. C'est un état durable qui change notre façon de voir le monde. Quand on aime vraiment quelqu'un, on pense différemment, on agit différemment, on voit même la vie d'une autre couleur. Les philosophes, les poètes et les scientifiques se sont tous penchés sur ce mystère.
+      </p>
+
+      <blockquote>
+        « L'amour n'est pas regarder l'un l'autre, c'est regarder ensemble dans la même direction. »
+        <footer>— Antoine de Saint-Exupéry</footer>
+      </blockquote>
+
+      <h3>Pourquoi aimons-nous ?</h3>
+      <p>
+        Biologiquement, l'amour sert à la survie de l'espèce : il crée des liens entre individus, favorise la coopération, protège les enfants. Mais l'être humain dépasse cette dimension animale. Nous aimons par besoin de sens, de connexion, de partage. Nous aimons parce que nous sommes des êtres sociaux qui ont besoin des autres pour exister pleinement.
+      </p>
+      <p>
+        Il y a aussi une dimension spirituelle dans l'amour. De nombreuses traditions religieuses et philosophiques considèrent l'amour comme la force la plus puissante de l'univers — une énergie qui unit, qui guérit, qui élève l'âme humaine.
+      </p>
+
+      <h3>L'amour change-t-il avec le temps ?</h3>
+      <p>
+        Oui, et c'est l'une de ses caractéristiques les plus fascinantes. L'amour évolue. Il commence souvent par une attraction intense, un feu ardent. Puis, avec le temps, si la relation est saine, ce feu se transforme en braise : moins spectaculaire, mais bien plus chaud et durable. C'est le passage de la passion à la tendresse, et c'est là où réside la vraie profondeur de l'amour.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Avec qui ? -->
+<section class="articles-section" id="avec-qui">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Chapitre II</span>
+      <h2 class="section-title">Qui Aimons-Nous ?</h2>
+      <div class="section-divider"><span>♥</span></div>
+      <p class="lead-text">L'amour ne choisit pas une seule cible. Il s'exprime envers les autres, envers soi-même, envers le monde entier.</p>
+    </div>
+
+    <div class="articles-grid">
+      <div class="article-card glow-hover reveal">
+        <span class="card-emoji">👫</span>
+        <div class="card-content">
+          <span class="card-tag">Amour romantique</span>
+          <h3 class="card-title">Le partenaire amoureux</h3>
+          <p class="card-excerpt">C'est l'amour que nous ressentons pour une personne qui occupe une place unique dans notre cœur — un amour fait de désir, de complicité, de loyauté et de croissance mutuelle.</p>
+        </div>
+      </div>
+
+      <div class="article-card glow-hover reveal">
+        <span class="card-emoji">👨‍👩‍👧</span>
+        <div class="card-content">
+          <span class="card-tag">Amour familial</span>
+          <h3 class="card-title">La famille</h3>
+          <p class="card-excerpt">L'amour pour les parents, les enfants, les frères et sœurs. Un amour souvent inconditionnel, le premier que nous connaissons, celui qui forme notre capacité d'aimer.</p>
+        </div>
+      </div>
+
+      <div class="article-card glow-hover reveal">
+        <span class="card-emoji">🤝</span>
+        <div class="card-content">
+          <span class="card-tag">Amour fraternel</span>
+          <h3 class="card-title">Les amis</h3>
+          <p class="card-excerpt">L'amitié profonde peut être une forme d'amour pur, sans désir possessif, basé sur la confiance et l'acceptation totale de l'autre.</p>
+        </div>
+      </div>
+
+      <div class="article-card glow-hover reveal">
+        <span class="card-emoji">🌍</span>
+        <div class="card-content">
+          <span class="card-tag">Amour universel</span>
+          <h3 class="card-title">L'humanité entière</h3>
+          <p class="card-excerpt">Certaines personnes développent un amour qui dépasse leur cercle proche pour embrasser tous les êtres humains — c'est l'idéal de la compassion et de l'altruisme.</p>
+        </div>
+      </div>
+
+      <div class="article-card glow-hover reveal">
+        <span class="card-emoji">🐾</span>
+        <div class="card-content">
+          <span class="card-tag">Amour pour les animaux</span>
+          <h3 class="card-title">Les êtres non-humains</h3>
+          <p class="card-excerpt">L'attachement aux animaux, à la nature, peut être une expression sincère d'amour. Ces liens sont souvent purs, simples et immensément nourrissants.</p>
+        </div>
+      </div>
+
+      <div class="article-card glow-hover reveal">
+        <span class="card-emoji">🪞</span>
+        <div class="card-content">
+          <span class="card-tag">Amour de soi</span>
+          <h3 class="card-title">Soi-même</h3>
+          <p class="card-excerpt">Le plus fondamental et le plus difficile à cultiver. Sans amour de soi, il est difficile d'aimer les autres sincèrement. C'est la base de tout amour sain.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Types d'amour -->
+<section class="types-section" id="types">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Chapitre III</span>
+      <h2 class="section-title">Les Types d'Amour</h2>
+      <div class="section-divider"><span>♥</span></div>
+      <p class="lead-text">Les Grecs anciens avaient la sagesse de distinguer plusieurs types d'amour. Chacun a ses propres qualités, ses propres profondeurs.</p>
+    </div>
+
+    <div class="types-grid">
+      <div class="type-card reveal">
+        <span class="type-icon">🔥</span>
+        <h3 class="type-name">Éros</h3>
+        <span class="type-origin">Amour passionnel</span>
+        <p class="type-desc">L'amour romantique intense, le désir, la passion qui consume. C'est cet amour qui fait battre le cœur fort au premier regard.</p>
+      </div>
+
+      <div class="type-card reveal">
+        <span class="type-icon">🤝</span>
+        <h3 class="type-name">Philia</h3>
+        <span class="type-origin">Amour fraternel</span>
+        <p class="type-desc">L'affection profonde entre amis, l'amour basé sur la loyauté, le respect mutuel et le partage de valeurs communes.</p>
+      </div>
+
+      <div class="type-card reveal">
+        <span class="type-icon">🕊️</span>
+        <h3 class="type-name">Agapé</h3>
+        <span class="type-origin">Amour inconditionnel</span>
+        <p class="type-desc">L'amour universel et désintéressé, qui n'attend rien en retour. L'amour d'un parent pour son enfant, ou l'amour de l'humanité.</p>
+      </div>
+
+      <div class="type-card reveal">
+        <span class="type-icon">🌿</span>
+        <h3 class="type-name">Storge</h3>
+        <span class="type-origin">Amour familial naturel</span>
+        <p class="type-desc">L'attachement naturel entre membres d'une famille. Un amour calme, stable, qui n'a pas besoin d'être démontré pour exister.</p>
+      </div>
+
+      <div class="type-card reveal">
+        <span class="type-icon">💫</span>
+        <h3 class="type-name">Pragma</h3>
+        <span class="type-origin">Amour mûr</span>
+        <p class="type-desc">L'amour qui dure depuis des années, nourri par la compréhension mutuelle, le compromis et la patience. Le fruit d'une longue union.</p>
+      </div>
+
+      <div class="type-card reveal">
+        <span class="type-icon">😄</span>
+        <h3 class="type-name">Ludus</h3>
+        <span class="type-origin">Amour enjoué</span>
+        <p class="type-desc">L'amour ludique et léger, fait de rires, de jeux et de légèreté. Souvent présent au début des relations ou entre bons amis.</p>
+      </div>
+
+      <div class="type-card reveal">
+        <span class="type-icon">🪞</span>
+        <h3 class="type-name">Philautia</h3>
+        <span class="type-origin">Amour de soi</span>
+        <p class="type-desc">L'amour sain de soi-même. Pas l'arrogance, mais la confiance et la bienveillance envers sa propre personne.</p>
+      </div>
+
+      <div class="type-card reveal">
+        <span class="type-icon">🌸</span>
+        <h3 class="type-name">Meraki</h3>
+        <span class="type-origin">Amour de la vie</span>
+        <p class="type-desc">L'amour qu'on met dans ce qu'on fait — cuisiner avec amour, créer avec passion, donner son âme à chaque geste.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Caractéristiques -->
+<section class="full-article dark" id="qualites">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Chapitre IV</span>
+      <h2 class="section-title">Les Qualités de l'Amour Véritable</h2>
+      <div class="section-divider"><span>♥</span></div>
+      <p class="lead-text">Comment reconnaître un amour authentique ? Quelles sont ses caractéristiques essentielles ?</p>
+    </div>
+
+    <div class="article-body reveal">
+      <h3>La patience et la bonté</h3>
+      <p>
+        L'amour véritable ne s'impatiente pas. Il accepte l'autre avec ses défauts, ses erreurs, ses mauvais jours. Il est bienveillant même quand c'est difficile. Un amour sain ne cherche pas à punir, à blesser ou à dominer — il cherche à comprendre et à soutenir.
+      </p>
+
+      <h3>Le respect et la liberté</h3>
+      <p>
+        Aimer quelqu'un, ce n'est pas le posséder. L'amour authentique respecte l'espace de l'autre, ses besoins, ses rêves, son identité propre. Il ne cherche pas à contrôler, mais à accompagner. Un amour qui étouffe n'est pas un amour — c'est une prison dorée.
+      </p>
+
+      <blockquote>
+        « Si tu aimes une fleur, ne la cueille pas. Car si tu la cueilles, elle meurt et cesse d'être ce que tu aimes. »
+        <footer>— Osho</footer>
+      </blockquote>
+
+      <h3>La confiance et la loyauté</h3>
+      <p>
+        Sans confiance, l'amour devient anxiété. La confiance se construit lentement, avec des actes cohérents, de la transparence et de la fidélité. La loyauté signifie être présent non seulement dans les bons moments, mais aussi quand l'autre traverse des difficultés.
+      </p>
+
+      <h3>La communication et l'honnêteté</h3>
+      <p>
+        Les couples qui durent ne sont pas ceux qui ne se disputent jamais — ce sont ceux qui savent parler, écouter et se réconcilier. L'amour a besoin d'un espace de dialogue sincère, où l'on peut exprimer ses peurs, ses besoins et ses désirs sans jugement.
+      </p>
+
+      <h3>La croissance mutuelle</h3>
+      <p>
+        Un bel amour fait grandir les deux personnes. On devient meilleur grâce à l'autre. On est inspiré, challengé, soutenu. L'amour ne devrait pas nous réduire, mais nous révéler à nous-mêmes.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Manifestations visibles -->
+<section class="manifestations-section" id="manifestations">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Chapitre V</span>
+      <h2 class="section-title">Les Signes de l'Amour</h2>
+      <div class="section-divider"><span>♥</span></div>
+      <p class="lead-text">Comment l'amour se manifeste-t-il dans la vie quotidienne ? Quels sont ses signes visibles et invisibles ?</p>
+    </div>
+
+    <div class="manifests-list reveal">
+      <div class="manifest-item">
+        <span class="manifest-num">01</span>
+        <div class="manifest-text">
+          <h4>Penser constamment à l'autre</h4>
+          <p>L'esprit revient toujours à cette personne. Un parfum, une chanson, un lieu — tout rappelle l'être aimé. Cette pensée n'est pas une obsession anxieuse, mais une présence douce et constante.</p>
+        </div>
+      </div>
+      <div class="manifest-item">
+        <span class="manifest-num">02</span>
+        <div class="manifest-text">
+          <h4>Vouloir le bonheur de l'autre avant le sien</h4>
+          <p>On se réjouit sincèrement du succès de l'autre, même quand on est soi-même en difficulté. La joie de l'autre devient une joie pour soi.</p>
+        </div>
+      </div>
+      <div class="manifest-item">
+        <span class="manifest-num">03</span>
+        <div class="manifest-text">
+          <h4>Les petits gestes du quotidien</h4>
+          <p>L'amour se cache dans les détails : préparer un café à l'heure exacte, se souvenir des petites préférences, laisser un mot affectueux, être là sans qu'on ait à le demander.</p>
+        </div>
+      </div>
+      <div class="manifest-item">
+        <span class="manifest-num">04</span>
+        <div class="manifest-text">
+          <h4>La sécurité émotionnelle</h4>
+          <p>Avec la personne aimée, on se sent en sécurité pour être soi-même — vulnérable, imparfait, authentique. Cette sécurité est l'un des signes les plus profonds d'un amour sain.</p>
+        </div>
+      </div>
+      <div class="manifest-item">
+        <span class="manifest-num">05</span>
+        <div class="manifest-text">
+          <h4>La jalousie douce et saine</h4>
+          <p>Une légère jalousie peut être un signe d'amour, car elle montre qu'on tient à l'autre. Mais attention : une jalousie excessive est destructrice et révèle souvent un manque de confiance en soi.</p>
+        </div>
+      </div>
+      <div class="manifest-item">
+        <span class="manifest-num">06</span>
+        <div class="manifest-text">
+          <h4>Accepter les défauts de l'autre</h4>
+          <p>On ne tombe pas amoureux d'une image parfaite, mais d'une personne réelle avec ses contradictions. Accepter, voire aimer les imperfections de l'autre, c'est la forme la plus profonde d'amour.</p>
+        </div>
+      </div>
+      <div class="manifest-item">
+        <span class="manifest-num">07</span>
+        <div class="manifest-text">
+          <h4>Le temps partagé</h4>
+          <p>On choisit de donner son bien le plus précieux — son temps — à l'autre. Chaque moment ensemble est ressenti comme un cadeau, même si rien de particulier ne se passe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Science de l'amour -->
+<section class="science-section" id="science">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Chapitre VI</span>
+      <h2 class="section-title">L'Amour et la Science</h2>
+      <div class="section-divider"><span>♥</span></div>
+      <p class="lead-text">La science a commencé à percer les mystères de l'amour. Ce que le cœur ressent, le cerveau le vit de façon très concrète.</p>
+    </div>
+
+    <div class="stats-grid reveal">
+      <div class="stat-card">
+        <span class="stat-num">3<span class="stat-unit">+</span></span>
+        <span class="stat-label">hormones principales impliquées dans l'amour</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">0,2<span class="stat-unit">s</span></span>
+        <span class="stat-label">pour tomber amoureux selon les neurosciences</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">12<span class="stat-unit">+</span></span>
+        <span class="stat-label">zones du cerveau activées par l'amour</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">∞</span>
+        <span class="stat-label">façons de vivre et d'exprimer l'amour</span>
+      </div>
+    </div>
+
+    <div class="article-body reveal">
+      <h3>La chimie de l'amour</h3>
+      <p>
+        Quand on tombe amoureux, notre cerveau libère un cocktail de substances chimiques puissantes. La <strong>dopamine</strong> crée ce sentiment d'excitation et de plaisir intense. La <strong>sérotonine</strong> diminue, ce qui explique pourquoi on pense constamment à l'être aimé. L'<strong>ocytocine</strong>, surnommée "l'hormone de l'attachement", renforce les liens affectifs, notamment lors des câlins et du contact physique.
+      </p>
+
+      <h3>L'amour comme état du cerveau</h3>
+      <p>
+        Les neuroscientifiques ont découvert que tomber amoureux active les mêmes zones du cerveau que certaines dépendances. Ce n'est pas une coïncidence : l'amour crée une véritable "accoutumance" à l'autre. C'est pourquoi la séparation peut être aussi douloureuse — le cerveau vit un manque réel, presque physique.
+      </p>
+
+      <h3>L'amour dure-t-il vraiment ?</h3>
+      <p>
+        La phase de passion intense dure en moyenne 12 à 18 mois. Ensuite, le cerveau s'adapte et la relation entre dans une phase différente. Cela ne signifie pas que l'amour meurt — il se transforme en quelque chose de plus stable et de plus profond. Les couples qui durent ont su traverser cette transition et construire quelque chose au-delà de la chimie initiale.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Quiz interactif -->
+<section class="interactive-section" id="quiz">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Se découvrir</span>
+      <h2 class="section-title">Quel est votre style d'amour ?</h2>
+      <div class="section-divider"><span>♥</span></div>
+      <p class="lead-text">Chacun exprime et reçoit l'amour d'une façon unique. Découvrez votre langage de l'amour.</p>
+    </div>
+
+    <div class="quiz-container reveal">
+      <div id="quiz-body">
+        <p class="quiz-question" id="question-text">Qu'est-ce qui vous touche le plus dans une relation ?</p>
+        <div class="quiz-options" id="options-container"></div>
+        <div class="quiz-result" id="quiz-result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Citations -->
+<section class="quotes-section" id="citations">
+  <div class="container">
+    <div class="section-header reveal" style="color:rgba(255,255,255,0.8)">
+      <span class="section-label">Les Sages</span>
+      <h2 class="section-title" style="color:var(--rose)">Ce que les Grands ont dit</h2>
+      <div class="section-divider"><span>♥</span></div>
+    </div>
+
+    <div class="quotes-carousel reveal">
+      <div class="quote-slide active">
+        <p class="quote-text">L'amour est la seule chose qui grandit quand on la dépense.</p>
+        <span class="quote-author">— Victor Hugo</span>
+      </div>
+      <div class="quote-slide">
+        <p class="quote-text">Aimer, c'est trouver sa richesse hors de soi.</p>
+        <span class="quote-author">— Alain</span>
+      </div>
+      <div class="quote-slide">
+        <p class="quote-text">La plus grande chose qu'un homme puisse faire pour une femme est de lui permettre d'aimer davantage.</p>
+        <span class="quote-author">— Rainer Maria Rilke</span>
+      </div>
+      <div class="quote-slide">
+        <p class="quote-text">Ce n'est pas le manque d'amour, mais le manque d'amitié qui rend les mariages malheureux.</p>
+        <span class="quote-author">— Friedrich Nietzsche</span>
+      </div>
+      <div class="quote-slide">
+        <p class="quote-text">Nous aimons parce qu'il est la seule vraie aventure.</p>
+        <span class="quote-author">— Nikki Giovanni</span>
+      </div>
+      <div class="quote-slide">
+        <p class="quote-text">Là où il y a amour, il y a vie.</p>
+        <span class="quote-author">— Mahatma Gandhi</span>
+      </div>
+    </div>
+
+    <div class="quote-dots reveal" id="dots-container"></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <span class="footer-heart">♥</span>
+  <p>L'Amour — Une exploration du cœur humain</p>
+  <p style="margin-top:0.5rem;font-size:0.75rem;opacity:0.3;">Fait sans amour hh · par krnl0xsns1nk (saad eddin) </p>
+</footer>
+
+<script>
+// =================== BURGER MENU ===================
+(function() {
+  const btn = document.getElementById('burger-btn');
+  const menu = document.getElementById('nav-menu');
+  if (!btn || !menu) return;
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+  });
+  menu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+    });
+  });
+})();
+
+// =================== PARTICULES ===================
+(function() {
+  const container = document.getElementById('particles');
+  const symbols = ['♥', '❤', '♡', '✿', '·'];
+  function createParticle() {
+    const el = document.createElement('div');
+    el.classList.add('particle');
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = (Math.random() * 14 + 8) + 'px';
+    el.style.animationDuration = (Math.random() * 12 + 8) + 's';
+    el.style.animationDelay = (Math.random() * 5) + 's';
+    el.style.opacity = 0;
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 20000);
+  }
+  setInterval(createParticle, 600);
+  for(let i = 0; i < 15; i++) setTimeout(createParticle, i * 200);
+})();
+
+// =================== CURSOR TRAIL ===================
+document.addEventListener('mousemove', function(e) {
+  if (Math.random() > 0.85) {
+    const h = document.createElement('div');
+    h.className = 'heart-cursor';
+    h.textContent = '♥';
+    h.style.left = e.clientX + 'px';
+    h.style.top = e.clientY + 'px';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 800);
+  }
+});
+
+// =================== SCROLL REVEAL ===================
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// =================== QUIZ ===================
+const quizData = [
+  {
+    question: "Qu'est-ce qui vous touche le plus dans une relation ?",
+    options: [
+      { text: "Recevoir des compliments et des mots affectueux", result: "Paroles affectueuses" },
+      { text: "Les câlins, les baisers et le contact physique", result: "Contact physique" },
+      { text: "Que l'autre fasse des choses pour moi", result: "Services rendus" },
+      { text: "Passer du temps de qualité ensemble", result: "Temps de qualité" },
+      { text: "Recevoir des cadeaux ou des attentions", result: "Cadeaux et attentions" }
+    ]
+  }
+];
+
+const results = {
+  "Paroles affectueuses": "Votre langage de l'amour principal est les <strong>paroles affectueuses</strong>. Vous avez besoin d'entendre et de dire « je t'aime », de recevoir des compliments sincères et des mots doux. Pour vous, les mots ont un poids immense — ils nourrissent votre âme.",
+  "Contact physique": "Votre langage de l'amour est le <strong>contact physique</strong>. Un câlin, une main tenue, un baiser — ces gestes simples vous font sentir aimé(e) plus que n'importe quel autre signe. La présence physique de l'autre vous est essentielle.",
+  "Services rendus": "Votre langage de l'amour, c'est <strong>les services rendus</strong>. Quand quelqu'un fait quelque chose pour vous — prépare votre repas préféré, vous aide dans une tâche — c'est pour vous la plus belle déclaration d'amour.",
+  "Temps de qualité": "Votre langage de l'amour est le <strong>temps de qualité</strong>. Ce qui compte le plus pour vous, c'est d'avoir une attention pleine et entière. Être vraiment présent ensemble, sans distraction, c'est votre nourriture émotionnelle.",
+  "Cadeaux et attentions": "Votre langage de l'amour est <strong>les cadeaux et les attentions</strong>. Pas par matérialisme, mais parce que pour vous, un cadeau est un symbole visible que l'autre pense à vous. Ces petits signes tangibles de l'amour vous touchent profondément."
+};
+
+function initQuiz() {
+  const q = quizData[0];
+  document.getElementById('question-text').textContent = q.question;
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = opt.text;
+    btn.onclick = () => showResult(opt.result);
+    container.appendChild(btn);
+  });
+}
+
+function showResult(key) {
+  const container = document.getElementById('options-container');
+  const resultDiv = document.getElementById('quiz-result');
+  const q = document.getElementById('question-text');
+  container.style.opacity = '0';
+  container.style.transition = 'opacity 0.4s';
+  setTimeout(() => {
+    container.style.display = 'none';
+    q.textContent = 'Votre langage de l\'amour :';
+    resultDiv.innerHTML = results[key];
+    resultDiv.style.display = 'block';
+
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.style.marginTop = '1.5rem';
+    btn.style.textAlign = 'center';
+    btn.textContent = '↩ Recommencer';
+    btn.onclick = () => {
+      resultDiv.style.display = 'none';
+      btn.remove();
+      container.style.display = 'grid';
+      container.style.opacity = '1';
+      q.textContent = quizData[0].question;
+    };
+    resultDiv.appendChild(btn);
+  }, 400);
+}
+
+initQuiz();
+
+// =================== CITATIONS CAROUSEL ===================
+(function() {
+  const slides = document.querySelectorAll('.quote-slide');
+  const dotsContainer = document.getElementById('dots-container');
+  let current = 0;
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goTo(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+  }
+
+  setInterval(() => goTo((current + 1) % slides.length), 5000);
+})();
+
+// =================== NAV ACTIVE ===================
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  let found = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 200) found = sec.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = (a.getAttribute('href') === '#' + found) ? 'white' : '';
+  });
+});
+</script>
+</body>
+</html>
